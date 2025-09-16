@@ -3,12 +3,13 @@
 {% block content %}
       <h1>Surveys</h1>
 
-      {% if True %}
+      {% if surveys %}
           <table class="table surveys-list-table">
               <thead>
                   <tr>
                       <th>Topic</th>
                       <th>Answer Count</th>
+                      <th class="text-end">Actions</th>
                   </tr>
               </thead>
               <tbody>
@@ -16,7 +17,15 @@
                       <tr>
                           <td>{{ survey.topic }}</td>
                           <td>{{ survey.answer_count }}</td>
-                          <td class="text-end"><a href="{{ url_for('surveys.survey_page', survey_id=survey.id) }}" class="btn btn-sm btn-primary">Survey Page</a></td>
+                          <td class="text-end">
+                              <a href="{{ url_for('surveys.survey_page', survey_id=survey.id) }}" class="btn btn-sm btn-primary">Survey Page</a>
+                              {% if client.is_enabled('delete_survey_flag') %}
+                                  <a
+                                        href="{{ url_for('surveys.delete_survey', survey_id=survey.id) }}"
+                                        class="btn btn-sm btn-danger"
+                                        >Delete</a>
+                              {% endif %}
+                          </td>
                       </tr>
                   {% endfor %}
               </tbody>
