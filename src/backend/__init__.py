@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from UnleashClient import UnleashClient
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
@@ -14,6 +15,13 @@ class BaseModel(DeclarativeBase):
 db = SQLAlchemy(model_class=BaseModel)
 migrate = Migrate()
 csrf = CSRFProtect()
+client = UnleashClient(
+   url="http://host.docker.internal:4242/api",
+   app_name="flask-surveys-container-app",
+   custom_headers={'Authorization': API_KEY}
+)
+
+client.initialize_client()
 
 
 def create_app(config=None):
