@@ -1,7 +1,9 @@
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, abort
+
 from sqlalchemy import select
 
-from backend import db
+from backend import db, client
+
 from backend.surveys import bp
 from backend.surveys.models import Answer, Survey
 
@@ -14,7 +16,7 @@ def index():
 @bp.route("/surveys", methods=["GET"])
 def surveys_list_page():
     surveys = db.session.execute(select(Survey)).scalars().all()
-    return render_template("surveys_list.html", surveys=surveys)
+    return render_template("surveys_list.html", surveys=surveys, client=client)
 
 
 @bp.route("/surveys/new", methods=["GET"])
@@ -47,6 +49,7 @@ def survey_page(survey_id):
         survey=survey,
         answers=answers,
         already_voted=Survey.cookie_for_id(survey_id) in request.cookies,
+        client=client,
     )
 
 
@@ -66,4 +69,27 @@ def answers_create_handler(survey_id):
     resp = redirect(url_for("surveys.survey_page", survey_id=survey_id))
     # Set cookie on the response
     resp.set_cookie(Survey.cookie_for_id(survey_id), "answered")
+    return resp
+
+@bp.route("/surveys/<int:survey_id>/delete", methods=["GET", "POST", "DELETE"])
+def delete_survey(survey_id):
+   # if flag is not enabled, return a 404 page
+   if not client.is_enabled('delete_survey_flag'):
+      abort(404, description="Resource not found")
+   else:
+      # otherwise, delete the survey
+      survey = db.get_or_404(Survey, survey_id)
+      db.session.delete(survey)
+      db.session.commit()
+
+      return redirect(url_for("surveys.surveys_list_page"))
+
+@bp.route("/surveys/<int:survey_id>/retake", methods=["POST"])
+def retake_survey(survey_id):
+    # if flag is not enabled, return a 404 page
+    if not client.is_enabled('retake_survey_flag'):
+        abort(404, description="Resource not found")
+    # clear the vote cookie and redirect back to the survey page so the user can vote again
+    resp = redirect(url_for("surveys.survey_page", survey_id=survey_id))
+    resp.delete_cookie(Survey.cookie_for_id(survey_id))
     return resp
