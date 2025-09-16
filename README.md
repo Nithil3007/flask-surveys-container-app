@@ -117,3 +117,50 @@ either by deleting the resource group in the Portal or running `azd down`.
 ## Getting help
 
 If you're working with this project and running into issues, please post in [Discussions](/discussions).
+
+## Unleash - feature flags (with the flag enabled in development)
+
+### [Instructions](https://docs.getunleash.io/feature-flag-tutorials/python)
+
+<img width="1439" height="598" alt="image" src="https://github.com/user-attachments/assets/5fa18429-61ce-42f1-b175-9eb7778bbbf0" />
+
+### 1) Delete Button
+
+<img width="1409" height="385" alt="Screenshot 2025-09-16 at 12 11 18 AM" src="https://github.com/user-attachments/assets/31f7a448-7187-4bc9-980a-8194e601a813" />
+
+### 2) Retake Survey Button
+
+<img width="1361" height="353" alt="Screenshot 2025-09-16 at 12 08 51 AM" src="https://github.com/user-attachments/assets/8dc54a7d-7ee6-4dbf-b958-c1dd3af64f8c" />
+
+## with flags disabled in development
+
+### 1) No Delete Button
+
+<img width="2818" height="770" alt="image" src="https://github.com/user-attachments/assets/50892b28-d9ab-4cc1-93db-5cc51a8910d7" />
+
+### 2) No Retake Survey Button
+
+<img width="1429" height="535" alt="image" src="https://github.com/user-attachments/assets/9241dfa7-f459-4caa-a1b0-1758be0ec708" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
